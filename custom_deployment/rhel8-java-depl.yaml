@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rhel8-java-test
+  labels:
+    app: rhel8-java-test
+    role: none
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rhel8-java-test
+  template:
+    metadata:
+      labels:
+        app: rhel8-java-test
+    spec:
+      containers:
+      - name: rhel8-java-test
+        image: 'localhost/rhel8-java:v0.1'
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8080

@@ -1,12 +1,34 @@
 # General Notes
 
-## Structure of how things deployed
+### General container notes
+* Containers are created using images
+* Containers can either be the default image or be customized using a Dockerfile
+* Images are downloaded from vendor repositories
+
+### Offline Containers
+* All possible images that a node can run have to be available on every node
+* To export an image from an online machine that was downloaded using ```podman pull```
+you need to export it to a file using ```podman save -o <filename> <image>``` and
+import the image on the offline nodes using ```podman load --input <filename>```
+* To confirm that kubelet sees the imported images after they're imported using podman 
+you can use ```crictl img``` and to see containers that have been built use
+```crictl ps -a```. If any errors happen during this process they are logged to 
+syslog which can be viewed in /var/log/messages or using ```journalctl -xeu kubelet```
+
+### Getting the dashboard working
+* Apparently the default is to not have any graphical interface so the only available
+GUI for this comes from the kubernetesui/dashboard and kubernetesui/metrics-scraper image
+* The official recommended deployment settings for the dashboard are currently available at
+https://raw.githubusercontent.com/kubernetes/dashboard/v2.4.0/aio/deploy/recommended.yaml
+
+### Structure of how things deployed
 1. A deployment is the parent of all, and theoretically you only need to ever change deployments
 2. Under each deployment is a replicaset, if a deployments get modified a new replicaset is build
 3. In each replicaset is one or more pods
 4. Each pod is one or more containers
+5. A service is used to expose pods to the outside, by default all pods have no external connection
 
-## Create simple deployment
+### Create simple deployment
 1. Run ```kubectl create deployment nginx-depl --image=nginx``` to 
 create a new deployment of an nginx container
 2. Run ```kubectl get deployment``` to show the new deployment 
@@ -16,8 +38,32 @@ and ```kubectl get pod``` to see the new pods once they are created
 to change the ```-image: nginx``` line to ```-image: nginx:1.16```
 4. Save the changes and run ```kubectl get replicaset``` to see the new replicaset
 
-### View logs in a running pod
-```kubectl logs <pod-name>```
+### Useful commands
+```
+# Get logs of a pod
+kubectl logs <pod-name> 
 
-### Open a Bash shell in a running pod
-```kubectl exec -it <pod-name> -- bin/bash```
+# Get logs from something other than a pod
+kubectl logs deployment/<name>
+
+# Execute something in a pod
+kubectl exec -it <pod-name> -- bin/bash 
+
+# Create and run a container from an image
+podman run -it localhost/rhel8-java:v0.1
+
+# Build a container from a Dockerfile, will produce 
+# a new container named localhost/rhel8-java:v0.1
+podman build --tag rhel8-java:v0.1 -f ./Dockerfile
+```
+
+
+### Sample Dockerfile to customize a RHEL8 UBI
+```
+FROM registry.access.redhat.com/ubi8:latest
+env PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin/:/bin
+RUN dnf -y upgrade && dnf install -y java-11-openjdk
+COPY /local/file/custom.jar /custom.jar
+EXPOSE 8080
+ENTRYPOINT java -jar /custom.jar
+```
