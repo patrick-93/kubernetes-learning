@@ -23,7 +23,8 @@ https://raw.githubusercontent.com/kubernetes/dashboard/v2.4.0/aio/deploy/recomme
 
 ### Structure of how things deployed
 1. A deployment is the parent of all, and theoretically you only need to ever change deployments
-2. Under each deployment is a replicaset, if a deployments get modified a new replicaset is build
+2. Under each deployment is one or more replicasets, if a deployment gets modified new replicasets
+are built
 3. In each replicaset is one or more pods
 4. Each pod is one or more containers
 5. A service is used to expose pods to the outside, by default all pods have no external connection
@@ -40,6 +41,13 @@ to change the ```-image: nginx``` line to ```-image: nginx:1.16```
 
 ### Useful commands
 ```
+# Generate a deployment yaml file template using kubectl
+kubectl create deployment \
+	--image=nginx nginx \
+	--image=myapp myapp \
+	--replicas=4 --dry-run=client \
+	-o yaml > myapp-deployment.yml
+
 # Get logs of a pod
 kubectl logs <pod-name> 
 
