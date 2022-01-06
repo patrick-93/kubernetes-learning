@@ -43,8 +43,8 @@ to change the ```-image: nginx``` line to ```-image: nginx:1.16```
 ```
 # Generate a deployment yaml file template using kubectl
 kubectl create deployment \
-	--image=nginx nginx \
-	--image=myapp myapp \
+	--namespace=my-namespace \
+	--image=registry.domain.local/myapp:latest myapp \
 	--replicas=4 --dry-run=client \
 	-o yaml > myapp-deployment.yml
 
