@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: simpleweb
+    name: simpleweb
+  name: simpleweb
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: simpleweb
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: simpleweb
+        name: simpleweb
+    spec:
+      containers:
+      - image: nginx
+        name: nginx
+        resources: {}
+status: {}

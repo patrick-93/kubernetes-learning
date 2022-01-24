@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: apacheweb
+    name: apachewebsvc
+  name: apachewebsvc
+spec:
+  ports:
+  - port: 8080 # internal port
+    protocol: TCP
+    targetPort: 8080 # actual port application listens on
+    nodePort: 30241 # external port that LB will use
+  selector:
+    app: apacheweb
+    name: apacheweb
+  type: NodePort
+status:
+  loadBalancer: {}

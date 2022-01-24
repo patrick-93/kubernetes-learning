@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: simpleweb
+    name: simplewebsvc
+  name: simplewebsvc
+spec:
+  ports:
+  - port: 8080 # internal port
+    protocol: TCP
+    targetPort: 80 # actual port service listens on
+    nodePort: 30240 # external port clients will use
+  selector:
+    app: simpleweb
+    name: simpleweb
+  type: NodePort
+status:
+  loadBalancer: {}

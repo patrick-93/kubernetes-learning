@@ -1,0 +1,4 @@
+setsebool -P haproxy_connect_any 1
+
+
+haproxy -c -V -f /etc/haproxy/haproxy.cfg
