@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc-nginx-data
+spec:
+  storageClassName: kube-main-nfs # Use storage defined in pv-definition.yaml
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 20Gi

@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: dev-gitlab
+  name: dev-gitlab-depl
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: gitlab
+  template:
+    metadata:
+      labels:
+        app: gitlab
+    spec:
+      volumes:
+      - name: gitlab-vol
+        persistentVolumeClaim:
+          claimName: dev-pvc-gitlab # Must match storageClassName pvc definition
+      containers:
+      - image: "repo.example.com/gitlab:v14.0.3"
+        name: gitlab
+        volumeMounts:
+        - mountPath: /opt/gitlab
+          name: gitlab-vol # Must match the volume name   

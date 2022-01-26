@@ -5,6 +5,10 @@
 * Containers can either be the default image or be customized using a Dockerfile
 * Images are downloaded from vendor repositories
 
+### Google's distroless containers
+```https://github.com/GoogleContainerTools/distroless```
+* Documentation on images used to run kubernetes
+
 ### Offline Containers
 * All possible images that a node can run have to be available on every node
 * To export an image from an online machine that was downloaded using ```podman pull```
@@ -75,3 +79,6 @@ COPY /local/file/custom.jar /custom.jar
 EXPOSE 8080
 ENTRYPOINT java -jar /custom.jar
 ```
+
+### Repository folder structure
+Sample folder structure in ```repo_structure/```

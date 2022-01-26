@@ -19,8 +19,15 @@ spec:
         app: simpleweb
         name: simpleweb
     spec:
+      volumes:
+      - name: nginx-vol
+        persistentVolumeClaim:
+          claimName: pvc-nginx-data # Must match storageClassName in pv-definition.yaml
       containers:
       - image: nginx
         name: nginx
         resources: {}
+        volumeMounts:
+        - mountPath: /var/www/html
+          name: nginx-vol # Must match the volume name   
 status: {}
