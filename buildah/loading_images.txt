@@ -1,0 +1,5 @@
+# Command to load images into podman after exported
+cat image.tar | podman image load
+
+# Export from buildah
+buildah push imageID dir:image_name
