@@ -29,7 +29,7 @@ dnf install \
 
 dnf clean all --installroot $INSTALLROOT --releasever $RELEASEVER
 
-buildah commit $TMPIMG $IMGNAME
+buildah commit --squash $TMPIMG cr.local/$IMGNAME:$VERSION
 
 # buildah push --format oci $IMGNAME oci-archive:img:$NAME
 
