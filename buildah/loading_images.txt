@@ -3,3 +3,10 @@ cat image.tar | podman image load
 
 # Export from buildah
 buildah push imageID dir:image_name
+
+
+# Build an empty container then dump to tar
+buildah from scratch
+buildah commit --squash working-container tempctr
+buildah push tempctr oci-archive:tempctr.tar
+tar xf tempctr.tar && rm tempctr.tar
